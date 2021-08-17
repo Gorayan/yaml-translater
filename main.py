@@ -1,17 +1,16 @@
 import os
-import re
 
 from google.cloud import translate_v2 as translate
 from ruamel import yaml
 from ruamel.yaml.comments import CommentedMap, CommentedSeq
-from ruamel.yaml.scalarstring import DoubleQuotedScalarString
+from ruamel.yaml.scalarstring import DoubleQuotedScalarString, SingleQuotedScalarString
 import sys
 
 
 # Google Cloud Translation API で翻訳
 def transtate(text):
 
-    if not isinstance(text, DoubleQuotedScalarString):
+    if (not isinstance(text, DoubleQuotedScalarString)) and (not isinstance(text, SingleQuotedScalarString)):
         return text
 
     result = client.translate(text, target_language='ja')
