@@ -5,7 +5,7 @@ Google Cloud Translation APIを使ったYamlファイル翻訳するPythonスク
 ```
 setx GOOGLE_APPLICATION_CREDENTIALS <json_key_path> -m
 ```
-公式ドキュメント [build instructions wiki page](https://cloud.google.com/translate/docs/setup)
+[公式ドキュメント](https://cloud.google.com/translate/docs/setup)
 ## Requirements
 * pyyaml 5.4.1
 * google-cloud-translate 2.0.1
