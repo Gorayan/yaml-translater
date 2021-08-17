@@ -1,11 +1,19 @@
 import os
+import re
+
 from google.cloud import translate_v2 as translate
-import yaml
+from ruamel import yaml
+from ruamel.yaml.comments import CommentedMap, CommentedSeq
+from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 import sys
 
 
 # Google Cloud Translation API で翻訳
 def transtate(text):
+
+    if not isinstance(text, DoubleQuotedScalarString):
+        return text
+
     result = client.translate(text, target_language='ja')
     text = result["translatedText"]
     text = text.translate(str.maketrans({chr(0xFF01 + i): chr(0x21 + i) for i in range(94)}))
@@ -16,11 +24,11 @@ def transtate(text):
 # 再起処理で子要素を翻訳していく
 def recursive_transtate(yaml_element):
 
-    if isinstance(yaml_element, list):
+    if isinstance(yaml_element, CommentedSeq):
 
         return list(map(recursive_transtate, yaml_element))
 
-    elif isinstance(yaml_element, dict):
+    elif isinstance(yaml_element, CommentedMap):
 
         for key in yaml_element.keys():
 
@@ -51,17 +59,22 @@ else:
 
 # pathからyamlファイルを読み込む
 with open(target_file_path, 'r', encoding="utf-8") as yml:
-    loaded_yaml = yaml.safe_load(yml)
+    loaded_yaml = yaml.round_trip_load(yml, preserve_quotes=True)
 
 # 翻訳
 recursive_transtate(loaded_yaml)
 
 target_file_path = os.path.splitext(target_file_path)[0]
-output_path = target_file_path + "_translated.yml"
+target_file_name = os.path.split(target_file_path)[1]
+
+if dest_path == "":
+    output_path = target_file_path + "_translated.yml"
+else:
+    output_path = os.path.dirname(dest_path) + "/" + target_file_name + "_translated.yml"
 
 if os.path.exists(output_path):
     os.remove(output_path)
 
 # output_pathにカキコ
 with open(output_path, 'w', encoding="utf-8") as file:
-    yaml.dump(loaded_yaml, file, allow_unicode=True)
+    yaml.round_trip_dump(loaded_yaml, stream=file, allow_unicode=True)
