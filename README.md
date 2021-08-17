@@ -1,5 +1,29 @@
 # yaml-translater
 Google Cloud Translation APIを使ったYamlファイル翻訳するPythonスクリプト
+## Example
+クォーテーションで囲まれている部分だけ翻訳されます
+* before
+```
+a: false
+b:
+  a: 'Good Night'
+  b: "I am Fine"
+c:
+- What are you doing?
+- a: Hey Guys!
+  b: We have a gift for you
+```
+* after
+```
+a: false
+b:
+  a: 'おやすみ'
+  b: "私は元気です"
+c:
+- What are you doing?
+- a: Hey Guys!
+  b: We have a gift for you
+```
 ## Setup
 サービスアカウントキーの設定(windows)
 ```
@@ -10,26 +34,8 @@ setx GOOGLE_APPLICATION_CREDENTIALS <json_key_path> -m
 * Python 3.9
 * pyyaml 5.4.1
 * google-cloud-translate 2.0.1
-## Example
-before
+## Usage
 ```
-a: Hello
-b:
-  a: Good Night
-  b: I am Fine
-c:
-- What are you doing?
-- a: Hey Guys!
-  b: We have a gift for you
+python main.py <target_file>
 ```
-after
-```
-a: こんにちは
-b:
-  a: おやすみ
-  b: 私は元気です
-c:
-- 何してるの?
-- a: やあみんな!
-  b: 私たちはあなたへの贈り物を持っています
-```
+同じディレクトリに対象ファイル名_translated.ymlが生成されます
