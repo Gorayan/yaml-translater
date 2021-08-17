@@ -32,7 +32,7 @@ setx GOOGLE_APPLICATION_CREDENTIALS <json_key_path> -m
 [公式ドキュメント](https://cloud.google.com/translate/docs/setup)
 ## Requirements
 * Python 3.9
-* pyyaml 5.4.1
+* ruamel.yaml==0.17.10
 * google-cloud-translate 2.0.1
 ## Usage
 ```
